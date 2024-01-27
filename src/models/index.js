@@ -16,7 +16,9 @@ const DATABASE_URL = process.env.DATABASE_URL === 'test'
   : process.env.DATABASE_URL;
 
 // Create database single instance of Sequelize
-const sequelizeDatabase = new Sequelize(DATABASE_URL);
+const sequelizeDatabase = new Sequelize(DATABASE_URL, {
+  dialect: 'your_sql_dialect', // e.g., 'postgres', 'mysql', 'sqlite'
+});
 
 // Create models (based on food.js and clothes.js shcema)
 // Takes in two parameters like shemas (sequelizeDatabase, DataTypes)

@@ -12,7 +12,7 @@ const clothes = require('./clothes');
 // Use database url from .env, if running test (dev) use use sqlite, else use port normally
 // If sqlite::memory does not work, use sqlite:memory
 const DATABASE_URL = process.env.DATABASE_URL === 'test'
-  ? 'sqlite::memory'
+  ? 'sqlite:memory'
   : process.env.DATABASE_URL;
 
 // Create database single instance of Sequelize

@@ -15,25 +15,16 @@ const DATABASE_URL = process.env.DATABASE_URL === 'test'
   ? 'sqlite:memory'
   : process.env.DATABASE_URL;
 
-// if production use ssl
-const isProduction = process.env.NODE_ENV === 'production'; // or any other way you define your production environment
-
-// explictly state dialect
-const sequelizeOptions = {
+// Create database single instance of Sequelize
+const sequelizeDatabase = new Sequelize(DATABASE_URL, {
   dialect: 'postgres',
-};
-
-// for production, send of ssl
-if (isProduction) {
-  sequelizeOptions.dialectOptions = {
+  dialectOptions: {
     ssl: {
       require: true,
-      rejectUnauthorized: false, // Note: For production, it's recommended to have `rejectUnauthorized: true` with proper SSL certificates
+      rejectUnauthorized: false, // You might need this line if you're using a self-signed certificate
     },
-  };
-}
-
-const sequelizeDatabase = new Sequelize(DATABASE_URL, sequelizeOptions);
+  },
+});
 
 // Create models (based on food.js and clothes.js shcema)
 // Takes in two parameters like shemas (sequelizeDatabase, DataTypes)

@@ -10,8 +10,8 @@ Basic API express server where databases are created and CRUD operations are tes
 
 ### Links and Resources
 
-- [Pull Request](https://github.com/MelodicXP/basic-server-express/pull/1)
-- [GitHub Actions ci/cd](https://github.com/MelodicXP/basic-server-express/actions)
+- [Pull Request](https://github.com/MelodicXP/api-server/pull/4)
+- [GitHub Actions ci/cd](https://github.com/MelodicXP/api-server/actions)
 - Prod [back-end server url](https://four01lab03-api-server-prod.onrender.com)
 
 ### Collaborators

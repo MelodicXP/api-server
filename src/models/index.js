@@ -18,6 +18,7 @@ const DATABASE_URL = process.env.DATABASE_URL === 'test'
 // Create database single instance of Sequelize
 const sequelizeDatabase = new Sequelize(DATABASE_URL, {
   dialect: 'postgres',
+  // remove this bottom portion to work locally, line 22 - 27
   dialectOptions: {
     ssl: {
       require: true,

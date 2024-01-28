@@ -12,18 +12,12 @@ const clothes = require('./clothes');
 // Use database url from .env, if running test (dev) use use sqlite, else use port normally
 // If sqlite::memory does not work, use sqlite:memory
 const DATABASE_URL = process.env.DATABASE_URL === 'test'
-  ? 'sqlite:memory'
+  ? 'sqlite::memory'
   : process.env.DATABASE_URL;
 
 // Create database single instance of Sequelize
 const sequelizeDatabase = new Sequelize(DATABASE_URL, {
-  dialect: 'postgres',
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false, // You can also use a CA cert with 'ca': fs.readFileSync('path/to/server-certificates.crt').toString()
-    },
-  },
+  dialect: 'postgres', // e.g., 'postgres', 'mysql', 'sqlite'
 });
 
 // Create models (based on food.js and clothes.js shcema)

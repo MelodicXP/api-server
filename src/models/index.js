@@ -17,7 +17,14 @@ const DATABASE_URL = process.env.DATABASE_URL === 'test'
 
 // Create database single instance of Sequelize
 const sequelizeDatabase = new Sequelize(DATABASE_URL, {
-  dialect: 'postgres', // e.g., 'postgres', 'mysql', 'sqlite'
+  dialect: 'postgres',
+  // remove this bottom portion to work locally, line 22 - 27
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false, // You might need this line if you're using a self-signed certificate
+    },
+  },
 });
 
 // Create models (based on food.js and clothes.js shcema)

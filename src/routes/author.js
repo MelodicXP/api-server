@@ -4,17 +4,17 @@
 const express = require('express');
 
 // Import foodModel from models/index
-const { foodModel } = require('../models/index');
+const { authorCollection } = require('../models/index');
 
 // Single instance of router
 const router = express.Router();
 
 // POST items to database, connect to database to create first, then send back data added as confirmation, else catch error
-router.post('/food', async (req, res, next) => {
+router.post('/author', async (req, res, next) => {
   try {
     // Takes in object (req.body) as an argument for .create()
-    const newFoodItem = await foodModel.create(req.body);
-    res.status(200).send(newFoodItem);
+    const newAuthor = await authorCollection.create(req.body);
+    res.status(200).send(newAuthor);
   } catch(e) {
     next(e);
   }

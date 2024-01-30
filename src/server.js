@@ -9,8 +9,8 @@ const express = require('express');
 // const errorHandler500 = require('./error-handlers/500');
 const notFound404 = require('./error-handlers/404');
 
-const foodRouter = require('./routes/food');
-const clothesRouter = require('./routes/clothes');
+const authorRouter = require('./routes/author');
+const bookRouter = require('./routes/book');
 
 const PORT = process.env.PORT || 3000; // Fallback to 3000 is no variable in env file
 
@@ -23,8 +23,8 @@ app.use(express.json());
 
 
 // Food and clothes routes
-app.use(foodRouter);
-app.use(clothesRouter);
+app.use(authorRouter);
+app.use(bookRouter);
 
 // Establish default route
 app.get('/', (req, res, next) => {

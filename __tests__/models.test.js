@@ -13,34 +13,35 @@ afterAll(async () => {
   await sequelizeDatabase.close(); // Changed from drop() to close() for safe teardown
 });
 
-describe('Clothes REST API', () => {
+describe('Author REST API', () => {
 
-  it('fails to get a non-existent clothes item by id', async () => {
-    let response = await mockRequest.get('/clothes/9999');
-    expect(response.status).toBeGreaterThan(399);
-    expect(response.body.message).toEqual('Clothes item with ID 9999 not found');
+  it('fails to get a non-existent author by id', async () => {
+    let response = await mockRequest.get('/author/9999');
+    expect(response.status).toBe(404);
+    expect(response.body.message).toEqual('Author with ID 9999 not found');
   });
   
-  it('fails to add a clothes item with invalid data', async () => {
-    let response = await mockRequest.post('/clothes').send({
-      type: 123, // assuming type should be a string
+  it('fails to add author with invalid data', async () => {
+    let response = await mockRequest.post('/author').send({
+      name: 123, // assuming name should be a string
     });
     expect(response.status).toBeGreaterThan(399);
   });
   
-  it('fails to update a non-existent clothes item', async () => {
-    let response = await mockRequest.put('/clothes/9999').send({
-      type: 'Non-existent Clothes',
-      size: 'Large',
-      color: 'Red',
+  it('fails to update a non-existent author by id', async () => {
+    let response = await mockRequest.put('/author/9999').send({
+      name: 'Non-existent Author',
+      genre: 'Non-Fiction',
+      numBooksPublished: 2,
     });
-    expect(response.status).toBeGreaterThan(399);
+    expect(response.status).toBe(404);
+    expect(response.body.message).toEqual('No Author found with ID 9999');
   });
 
-  it('tests for deleting non-existent item by id', async () => {
-    let deleteErrorResponse = await mockRequest.delete('/clothes/9999');
+  it('fails to delete non-existent author by id', async () => {
+    let deleteErrorResponse = await mockRequest.delete('/author/9999');
     expect(deleteErrorResponse.status).toEqual(404);
-    expect(deleteErrorResponse.body.message).toEqual('Clothes item with ID 9999 not found');
+    expect(deleteErrorResponse.body.message).toEqual('Author with ID 9999 not found');
   });
 
   it('handles 404 on a bad route', async () => {
@@ -50,60 +51,77 @@ describe('Clothes REST API', () => {
   });
 
   it('handles 404 on a bad method', async () => {
-    const response = await mockRequest.put('/clothes');
+    const response = await mockRequest.put('/author');
     expect(response.status).toEqual(404);
   });
 
-  it('adds a clothes item', async () => {
-    let response = await mockRequest.post('/clothes').send({
-      type: 'Shirt',
-      size: 'Medium',
-      color: 'Blue',
+  it('adds author(s) to database', async () => {
+    let response = await mockRequest.post('/author').send({
+      name: 'Test Author',
+      genre: 'Science Fiction',
+      numBooksPublished: 1,
     });
+
     expect(response.status).toEqual(200);
-    expect(response.body.type).toEqual('Shirt');
-    expect(response.body.size).toEqual('Medium');
-    expect(response.body.color).toEqual('Blue');
+    expect(response.body.name).toEqual('Test Author');
+    expect(response.body.genre).toEqual('Science Fiction');
+    expect(response.body.numBooksPublished).toEqual(1);
+    expect(response.body.id).toBeTruthy();
+
+    response = await mockRequest.post('/author').send({
+      name: 'Test Author 2',
+      genre: 'Fiction',
+      numBooksPublished: 2,
+    });
+
+    expect(response.status).toEqual(200);
+    expect(response.body.name).toEqual('Test Author 2');
+    expect(response.body.genre).toEqual('Fiction');
+    expect(response.body.numBooksPublished).toEqual(2);
     expect(response.body.id).toBeTruthy();
   });
 
-  it('gets all clothes items', async () => {
-    let response = await mockRequest.get('/clothes');
+  it('gets all authors from database', async () => {
+    let response = await mockRequest.get('/author');
+
+    expect(Array.isArray(response.body)).toBe(true);
+    expect(response.body.length).toBeGreaterThan(1);
     expect(response.status).toEqual(200);
-    expect(response.body[0].type).toEqual('Shirt');
-    expect(response.body[0].size).toEqual('Medium');
-    expect(response.body[0].color).toEqual('Blue');
+    expect(response.body[0].name).toEqual('Test Author');
+    expect(response.body[0].genre).toEqual('Science Fiction');
+    expect(response.body[0].numBooksPublished).toEqual(1);
     expect(response.body[0].id).toBeTruthy();
   });
 
-  it('gets one clothes item by id', async () => {
-    let response = await mockRequest.get('/clothes/1');
+  it('gets one author from database by id', async () => {
+    let response = await mockRequest.get('/author/2');
     expect(response.status).toEqual(200);
-    expect(response.body.type).toEqual('Shirt');
-    expect(response.body.size).toEqual('Medium');
-    expect(response.body.color).toEqual('Blue');
+    expect(response.body.name).toEqual('Test Author 2');
+    expect(response.body.genre).toEqual('Fiction');
+    expect(response.body.numBooksPublished).toEqual(2);
     expect(response.body.id).toBeTruthy();
+    expect(response.body.id).toEqual(2);
   });
 
-  it('updates clothes item by id', async () => {
-    let response = await mockRequest.put('/clothes/1').send({
-      type: 'Updated Clothes',
-      size: 'Large',
-      color: 'Green',
+  it('updates author by id', async () => {
+    let response = await mockRequest.put('/author/2').send({
+      name: 'Updated Author',
+      genre: 'Fantasy',
+      numBooksPublished: 3,
     });
     expect(response.status).toEqual(200);
-    expect(response.body.type).toEqual('Updated Clothes');
-    expect(response.body.size).toEqual('Large');
-    expect(response.body.color).toEqual('Green');
+    expect(response.body.name).toEqual('Updated Author');
+    expect(response.body.genre).toEqual('Fantasy');
+    expect(response.body.numBooksPublished).toEqual(3);
     expect(response.body.id).toBeTruthy();
+    expect(response.body.id).toEqual(2);
   });
 
-  it('deletes a clothes item by id', async () => {
-    let deleteResponse = await mockRequest.delete('/clothes/1');
+  it('deletes a author by id', async () => {
+    let deleteResponse = await mockRequest.delete('/author/1');
     expect(deleteResponse.status).toEqual(200);
     expect(deleteResponse.body.id).toEqual('1');
     expect(deleteResponse.body.deleted).toBeTruthy();
-    expect(deleteResponse.body.record).toBeNull();
   });
 });
 

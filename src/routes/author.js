@@ -35,7 +35,8 @@ router.get('/author/:id', async (req, res, next) => {
     // find author by id 
     const author = await authorCollection.read(id);
 
-    if (!author) {
+    // Check if response is an empty array indicating author not found
+    if (!author || author.length === 0) {
       // author not found, return a 404 status
       return res.status(404).send({ message: `Author with ID ${id} not found` });
     }

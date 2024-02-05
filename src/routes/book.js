@@ -4,7 +4,7 @@
 const express = require('express');
 
 // Import clothesModel from models/index
-const { clothesModel } = require('../models/index');
+const { clothesModel } = require('../models/index');1
 
 // Single instance of router
 const router = express.Router();

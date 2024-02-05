@@ -9,6 +9,7 @@ const express = require('express');
 // const errorHandler500 = require('./error-handlers/500');
 const notFound404 = require('./error-handlers/404');
 
+// Import author and book routes
 const authorRouter = require('./routes/author');
 const bookRouter = require('./routes/book');
 
@@ -20,9 +21,7 @@ const app = express();
 // Allow to use json objects (that's what is being used when you 'post' in thunderclient)
 app.use(express.json());
 
-
-
-// Food and clothes routes
+// Author and Book routes
 app.use(authorRouter);
 app.use(bookRouter);
 

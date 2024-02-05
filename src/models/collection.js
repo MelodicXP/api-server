@@ -5,6 +5,7 @@ class Collection{
     this.model = model;
   }
 
+  // ** CREATE - create item in database
   async create(json){
     try {
       const record = await this.model.create(json);
@@ -15,6 +16,7 @@ class Collection{
     }
   }
 
+  // ** READ - read items from data (serves for BOTH get all, and get by id)
   async read(id){
     try {
       // If no ID is provided, fetch all records
@@ -34,6 +36,7 @@ class Collection{
     }
   }
 
+  // ** UPDATE - update record in database by id
   async update(id, json){
     try {
       // Find record by id
@@ -50,6 +53,7 @@ class Collection{
     }
   }
 
+  // ** DELETE - delete record by id
   async delete(id){
     try {
       // Find record by id and delete

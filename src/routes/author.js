@@ -41,7 +41,7 @@ router.get('/author/:id', async (req, res, next) => {
       return res.status(404).send({ message: `Author with ID ${id} not found` });
     }
     
-    // item found, return it
+    // author found, return it
     res.status(200).send(author);
   } catch (e) { // catch error
     console.error('Error getting author by id:', e);

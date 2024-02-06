@@ -35,7 +35,8 @@ router.get('/book/:id', async (req, res, next) => {
     // find book by id 
     const book = await bookCollection.read(id);
 
-    if (!book) {
+    // Check if response is an empty array indicating book not found
+    if (!book || book.length === 0) {
       // book not found, return a 404 status
       return res.status(404).send({ message: `Book with ID ${id} not found` });
     }

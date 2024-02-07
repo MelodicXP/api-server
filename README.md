@@ -6,11 +6,11 @@
 
 ### Problem Domain
 
-Basic API express server where databases are created and CRUD operations are tested.
+Basic API express server where associated databases are created and CRUD operations are tested
 
 ### Links and Resources
 
-- [Pull Request](https://github.com/MelodicXP/api-server/pull/4)
+- [Pull Request](https://github.com/MelodicXP/api-server/pull/6)
 - [GitHub Actions ci/cd](https://github.com/MelodicXP/api-server/actions)
 - Prod [back-end server url](https://four01lab03-api-server-prod.onrender.com)
 
@@ -47,7 +47,8 @@ DATABASE_URL: postgres://localhost:XXXX/name-of-server
     - Read a record using GET
     - Update a record using PUT
     - Destroy a record using DELETE
+    - Get all records by foreign key (association of two databases)
 
 #### UML
 
-![Lab-02-UML](./assets/Lab03UML.png)
+![Lab-02-UML](./assets/Lab04UML.png)

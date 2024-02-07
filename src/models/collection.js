@@ -36,6 +36,24 @@ class Collection{
     }
   }
 
+  // ** READ / GET records by any foreign key (all books by author id)
+  async readByForeignKey(foreignKey, value) {
+    try {
+      // Ensure authorId is provided
+      if (!value) {
+        throw new Error('A value for the foreign key is required');
+      }
+
+      // Fetch all records where the foreignKey matches the authorId
+      const records = await this.model.findAll({ where: { [foreignKey]: value } });
+
+      return records;
+    } catch (e) {
+      console.error(`Read by foreign key (${foreignKey}) error in the collection interface:`, e);
+      throw e;
+    }
+  }
+
   // ** UPDATE - update record in database by id
   async update(id, json){
     try {

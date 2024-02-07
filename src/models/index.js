@@ -5,7 +5,7 @@ require('dotenv').config();
 // Import library of sequelize
 const { Sequelize, DataTypes } = require('sequelize');
 
-// Import model definitions
+// Import model definitions, to use functions that create the models
 const Author = require('./author');
 const Book = require('./book');
 const Collection = require('./collection');
@@ -28,14 +28,28 @@ const sequelizeDatabase = new Sequelize(DATABASE_URL, {
   // },
 });
 
-// Initialize models (based on author and book shcema)
+// Initialize models (based on author and book shcema, calls functions to make the models)
 // Takes in two parameters like shcemas (sequelizeDatabase, DataTypes)
 const authorModel = Author(sequelizeDatabase, DataTypes);
 const bookModel = Book(sequelizeDatabase, DataTypes);
 
+// Make associations
+authorModel.hasMany(bookModel, {
+  foreignKey: 'authorId',
+  sourceKey: 'id',
+});
+bookModel.belongsTo(authorModel, {
+  foreignKey: 'authorId',
+  targetKey: 'id',
+});
+
+// Create a new COLLECTION class for each model
+const authorCollection = new Collection(authorModel);
+const bookCollection = new Collection(bookModel);
+
 // Export sequelizeDatabase instance and models wrapped in Collection instances
 module.exports = {
   sequelizeDatabase,
-  authorCollection: new Collection(authorModel),
-  bookCollection: new Collection(bookModel),
+  authorCollection,
+  bookCollection,
 };

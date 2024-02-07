@@ -4,7 +4,7 @@
 const express = require('express');
 
 // Import foodModel from models/index
-const { authorCollection } = require('../models/index');
+const { authorCollection, bookCollection } = require('../models/index');
 
 // Single instance of router
 const router = express.Router();
@@ -16,12 +16,12 @@ router.post('/author', async (req, res, next) => {
     const newAuthor = await authorCollection.create(req.body);
     res.status(200).send(newAuthor);
   } catch(e) {
-    console.error('Error getting all authors:', e);
+    console.error('Error posting author:', e);
     next(e);
   }
 });
 
-// ** GET all authors from database, await connection to database and send back data
+// ** GET ALL authors from database, await connection to database and send back data
 router.get('/author', async (req, res, next) => {
   const authors = await authorCollection.read();
   res.status(200).send(authors);
@@ -31,9 +31,13 @@ router.get('/author', async (req, res, next) => {
 router.get('/author/:id', async (req, res, next) => {
   try {
     // set id variable from request to find by id
-    const id = req.params.id;
+    const id = parseInt(req.params.id);
     // find author by id 
     const author = await authorCollection.read(id);
+
+    // get books with author
+    const books = await author.getBooks();
+    console.log(books);
 
     // Check if response is an empty array indicating author not found
     if (!author || author.length === 0) {
@@ -49,7 +53,24 @@ router.get('/author/:id', async (req, res, next) => {
   }
 });
 
-// ** Update a food item record
+// ** GET all books by author ID
+router.get('/author/:id/books', async (req, res, next) => {
+  try {
+    const authorId = parseInt(req.params.id);
+    const books = await bookCollection.readByForeignKey('authorId', authorId);
+
+    if (!books || books.length === 0) {
+      return res.status(404).send({ message: `No books found for Author with ID ${authorId}` });
+    }
+
+    res.status(200).send(books);
+  } catch (e) {
+    console.error(`Error getting books for author ${req.params.id}:`, e);
+    next(e);
+  }
+});
+
+// ** Update author record
 router.put('/author/:id', async (req, res, next) => {
   try {
     // set id variable from request to find food item by id

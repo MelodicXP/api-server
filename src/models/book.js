@@ -16,13 +16,10 @@ module.exports = (sequelizeDatabase, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    author: {
-      type: DataTypes.STRING,
+    authorId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
-    publisher: {
-      type: DataTypes.STRING,
-      allowNull: true, // allowNull true, publisher is optional
-    },
+    // Add author ID here ( see screenshot ) tie together?
   });
 };

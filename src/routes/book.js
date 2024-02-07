@@ -70,7 +70,7 @@ router.put('/book/:id', async (req, res, next) => {
   }
 });
 
-// Delete a food item record
+// Delete a book item record
 router.delete('/book/:id', async (req, res, next) => {
   try {
     const id = req.params.id;

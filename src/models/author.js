@@ -7,14 +7,10 @@ module.exports = (sequelizeDatabase, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    genre: {
-      type: DataTypes.ENUM,
-      values: ['Fiction', 'Non-Fiction', 'Science Fiction', 'Fantasy', 'Mystery', 'Other'],
-      allowNull: false,
-    },
     numBooksPublished: {
       type: DataTypes.INTEGER,
       allowNull: true, // This could be null indicating unknown or unpublished authors
     },
+    
   });
 };

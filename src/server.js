@@ -9,8 +9,9 @@ const express = require('express');
 // const errorHandler500 = require('./error-handlers/500');
 const notFound404 = require('./error-handlers/404');
 
-const foodRouter = require('./routes/food');
-const clothesRouter = require('./routes/clothes');
+// Import author and book routes
+const authorRouter = require('./routes/author');
+const bookRouter = require('./routes/book');
 
 const PORT = process.env.PORT || 3000; // Fallback to 3000 is no variable in env file
 
@@ -20,11 +21,9 @@ const app = express();
 // Allow to use json objects (that's what is being used when you 'post' in thunderclient)
 app.use(express.json());
 
-
-
-// Food and clothes routes
-app.use(foodRouter);
-app.use(clothesRouter);
+// Author and Book routes
+app.use(authorRouter);
+app.use(bookRouter);
 
 // Establish default route
 app.get('/', (req, res, next) => {

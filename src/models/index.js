@@ -5,9 +5,10 @@ require('dotenv').config();
 // Import library of sequelize
 const { Sequelize, DataTypes } = require('sequelize');
 
-// Import model definitions
-const food = require('./food');
-const clothes = require('./clothes');
+// Import model definitions, to use functions that create the models
+const Author = require('./author');
+const Book = require('./book');
+const Collection = require('./collection');
 
 // Use database url from .env, if running test (dev) use use sqlite, else use port normally
 // If sqlite::memory does not work, use sqlite:memory
@@ -15,7 +16,7 @@ const DATABASE_URL = process.env.DATABASE_URL === 'test'
   ? 'sqlite:memory'
   : process.env.DATABASE_URL;
 
-// Create database single instance of Sequelize
+// Initialize single instance of Sequelize with database configuration
 const sequelizeDatabase = new Sequelize(DATABASE_URL, {
   dialect: 'postgres',
   // remove this bottom portion to work locally, line 22 - 27
@@ -27,14 +28,28 @@ const sequelizeDatabase = new Sequelize(DATABASE_URL, {
   },
 });
 
-// Create models (based on food.js and clothes.js shcema)
-// Takes in two parameters like shemas (sequelizeDatabase, DataTypes)
-const foodModel = food(sequelizeDatabase, DataTypes);
-const clothesModel = clothes(sequelizeDatabase, DataTypes);
+// Initialize models (based on author and book shcema, calls functions to make the models)
+// Takes in two parameters like shcemas (sequelizeDatabase, DataTypes)
+const authorModel = Author(sequelizeDatabase, DataTypes);
+const bookModel = Book(sequelizeDatabase, DataTypes);
 
-// Export sequelizeDatabase instance and foodModel to be used elsewhere
+// Make associations
+authorModel.hasMany(bookModel, {
+  foreignKey: 'authorId',
+  sourceKey: 'id',
+});
+bookModel.belongsTo(authorModel, {
+  foreignKey: 'authorId',
+  targetKey: 'id',
+});
+
+// Create a new COLLECTION class for each model
+const authorCollection = new Collection(authorModel);
+const bookCollection = new Collection(bookModel);
+
+// Export sequelizeDatabase instance and models wrapped in Collection instances
 module.exports = {
   sequelizeDatabase,
-  foodModel,
-  clothesModel,
+  authorCollection,
+  bookCollection,
 };

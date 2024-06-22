@@ -5,6 +5,7 @@
 
 // Require use of libraries
 const express = require('express');
+const cors = require('cors');
 
 // const errorHandler500 = require('./error-handlers/500');
 const notFound404 = require('./error-handlers/404');
@@ -17,6 +18,7 @@ const PORT = process.env.PORT || 3000; // Fallback to 3000 is no variable in env
 
 // Single instance of express
 const app = express();
+app.use(cors());
 
 // Allow to use json objects (that's what is being used when you 'post' in thunderclient)
 app.use(express.json());

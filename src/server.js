@@ -13,6 +13,8 @@ const notFound404 = require('./error-handlers/404');
 // Import author and book routes
 const authorRouter = require('./routes/author');
 const bookRouter = require('./routes/book');
+const categoryRouter = require('./routes/category');
+const productsRouter = require('./routes/products');
 
 const PORT = process.env.PORT || 3000; // Fallback to 3000 is no variable in env file
 
@@ -26,6 +28,8 @@ app.use(express.json());
 // Author and Book routes
 app.use(authorRouter);
 app.use(bookRouter);
+app.use(categoryRouter);
+app.use(productsRouter);
 
 // Establish default route
 app.get('/', (req, res, next) => {
